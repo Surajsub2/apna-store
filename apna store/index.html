@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="A-faAkYMD53ESg75rU_8oNp9ONDy3DNLbc8XSNvrBhU" />
+    <title>Apna Gharelu Products - Ghar ka Saaman, Ab Online</title>
+    <meta name="keywords" content="Apna Gharelu Store niranjanpur, Online Grocery dehradun, Kirana Store niranjanpur, Sasta Ration niranjanpur, Suraj Maurya Store, Home Delivery niranjanpur, Best Grocery App dehradun, Atta, Dal, Oil, Soap online dehradun">
+    <meta name="description" content="niranjanpur ka apna online store. Suraj maurya se khareedein fresh ration, cleaning products aur beverages sabse saste rate par. Tez delivery aur online payment ki suvidha.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="photos/icon.png">
+</head>
+
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top shadow-sm py-2">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">Apna <span class="text-warning">Gharelu Products</span></a>
+            <div class="search-container d-none d-lg-flex flex-grow-1 mx-4">
+                <div class="input-group">
+                    <input type="text" id="searchInput" class="form-control border-0"
+                        placeholder="Search for Atta, Dal, Soap..." onkeyup="searchProduct()">
+                    <button class="btn btn-warning border-0 px-3"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <a class="nav-link text-white me-3 d-none d-md-block" href="#owner">About</a>
+                <div class="cart-icon-wrapper position-relative" onclick="sendOrderToWhatsApp()" style="cursor: pointer;">
+                    <i class="fa fa-shopping-basket text-white fs-4" aria-label="Shopping cart"></i>
+                    <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-2 d-flex gap-2">
+    <button id="installBtn" class="btn btn-warning btn-sm flex-fill fw-bold rounded-pill shadow-sm d-none">
+        <i class="fa fa-download"></i> Install App
+    </button>
+    <button onclick="shareApp()" class="btn btn-outline-success btn-sm flex-fill fw-bold rounded-pill shadow-sm">
+        <i class="fa fa-share-alt"></i> Share App
+    </button>
+</div>
+
+    <div class="bg-success p-2 d-lg-none shadow-sm sticky-search">
+        <div class="container position-relative">
+            <div class="input-group search-wrapper shadow-sm">
+                <input type="text" id="searchInputMobile" class="form-control border-0" 
+                       placeholder="Search products..." onkeyup="searchProductMobile()">
+                <button class="btn btn-white border-0 bg-white text-muted px-2" onclick="startVoiceSearch()" title="Speak now">
+                    <i class="fa fa-microphone" id="mikeIcon"></i>
+                </button>
+                <button class="btn btn-white border-0 bg-white text-success px-3 border-start">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+            <div id="searchSuggestions" class="list-group position-absolute w-100 shadow-lg d-none"></div>
+        </div>
+    </div>
+
+    <header class="bg-white py-3 text-center border-bottom shadow-sm">
+        <div class="container">
+            <h2 class="h5 fw-bold text-success mb-1">Ghar ka Saaman, Ab Online</h2>
+            <p class="small text-muted mb-0">Fresh Products | Sasta Rate | Fast Delivery</p>
+        </div>
+    </header>
+
+    <div class="container mt-2">
+        <div class="row row-cols-4 g-1 text-center py-2 bg-white rounded border shadow-sm mx-1" style="font-size: 0.65rem;">
+            <div class="col"><i class="fa fa-check-circle text-success d-block mb-1"></i>Quality</div>
+            <div class="col border-start"><i class="fa fa-wallet text-success d-block mb-1"></i>Cashback</div>
+            <div class="col border-start"><i class="fa fa-gift text-success d-block mb-1"></i>Refer</div>
+            <div class="col border-start"><i class="fa fa-boxes text-success d-block mb-1"></i>110+ Items</div>
+        </div>
+    </div>
+
+    <div class="container mt-4" id="products-section">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0 border-start border-success border-4 ps-2">Shop by Category</h5>
+            <div class="d-flex align-items-center bg-white p-1 rounded border shadow-sm">
+                <select id="sortSelect" class="form-select form-select-sm border-0 w-auto fw-bold text-success" onchange="sortProducts()">
+                    <option value="default">Relevance</option>
+                    <option value="lowToHigh">₹ Low to High</option>
+                    <option value="highToLow">₹ High to Low</option>
+                    <option value="name">Name A-Z</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="d-flex flex-nowrap overflow-auto gap-3 pb-3 category-scroll-container" style="scrollbar-width: none; -ms-overflow-style: none;">
+            <div class="category-item text-center flex-shrink-0" onclick="displayProducts('food')" style="width: 80px;">
+                <div class="icon-circle bg-white shadow-sm border rounded-circle d-flex align-items-center justify-content-center mb-2" style="width: 70px; height: 70px; margin: 0 auto;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3081/3081967.png" width="35" alt="Food">
+                </div>
+                <p class="small fw-bold mb-0">Ration</p>
+            </div>
+            <div class="category-item text-center flex-shrink-0" onclick="displayProducts('cleaning')" style="width: 80px;">
+                <div class="icon-circle bg-white shadow-sm border rounded-circle d-flex align-items-center justify-content-center mb-2" style="width: 70px; height: 70px; margin: 0 auto;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2554/2554042.png" width="35" alt="Cleaning">
+                </div>
+                <p class="small fw-bold mb-0">Cleaning</p>
+            </div>
+            <div class="category-item text-center flex-shrink-0" onclick="displayProducts('all')" style="width: 80px;">
+                <div class="icon-circle bg-white shadow-sm border rounded-circle d-flex align-items-center justify-content-center mb-2" style="width: 70px; height: 70px; margin: 0 auto;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3081/3081840.png" width="35" alt="All">
+                </div>
+                <p class="small fw-bold mb-0">Show All Products</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-2">
+        <p id="searchStatus" class="text-muted small mb-2 d-none"></p>
+        <div class="row g-3" id="main-product-list"></div>
+    </div>
+
+<div class="container mt-5 mb-4 d-none" id="history-section">
+    <h5 class="fw-bold mb-3 border-start border-success border-4 ps-2">Pichle Orders (Last 5)</h5>
+    <div id="order-history-list">
+        </div>
+</div>
+
+<div class="container mt-5">
+    <h5 class="fw-bold mb-3 border-start border-danger border-4 ps-2">Help & Feedback</h5>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 p-3 rounded-4">
+                <h6 class="fw-bold text-danger"><i class="fa fa-exclamation-circle"></i> Shikayat (Complaint)</h6>
+                <input type="text" id="compName" class="form-control mb-2 small" placeholder="Aapka Naam">
+                <textarea id="compMessage" class="form-control mb-2 small" rows="2" placeholder="Kya dikkat hai ?"></textarea>
+                <button onclick="sendFeedback('Complaint')" class="btn btn-danger btn-sm w-100 rounded-pill">Bhejein</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 p-3 rounded-4">
+                <h6 class="fw-bold text-success"><i class="fa fa-lightbulb"></i> Sujhaav (Suggestion)</h6>
+                <input type="text" id="suggName" class="form-control mb-2 small" placeholder="Aapka Naam">
+                <textarea id="suggMessage" class="form-control mb-2 small" rows="2" placeholder="Naya kya chahiye?"></textarea>
+                <button onclick="sendFeedback('Suggestion')" class="btn btn-success btn-sm w-100 rounded-pill">Bhejein</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <section id="owner" class="py-5 bg-white border-top mt-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-center mb-4 mb-md-0">
+                  <img src="WhatsApp Image 2026-05-04 at 10.26.13 AM.jpeg" 
+     class="rounded-circle img-thumbnail shadow-sm border-success border-3" 
+     style="width: 120px; height: 120px; object-fit: cover;" 
+     alt="Owner Suraj  Maurya">
+                </div>
+                <div class="col-md-8 text-center text-md-start">
+                    <h2 class="text-success fw-bold mb-3">Meet the Owner Suraj  Maurya</h2>
+                    <p class="lead text-dark">Namaste! Main Apna Gharelu Product ka owner hoon. Hum <b>Niranjanpur, Dehradun</b> mein fresh aur sasta saaman provide karte hain.</p>
+                    <div class="d-flex flex-wrap justify-content-center justify-content-md-start gap-3 mt-4">
+                        <a href="https://wa.me/8957812308" class="btn btn-success px-4 py-2 rounded-pill shadow">
+                            <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                        </a>
+                        <a href="tel:+918957812308" class="btn btn-outline-dark px-4 py-2 rounded-pill shadow-sm">
+                            <i class="fa fa-phone"></i> Call Owner
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="productLightbox" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content border-0 bg-transparent">
+                <div class="modal-header border-0 p-0 justify-content-end">
+                    <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0 text-center">
+                    <img id="lightboxImage" src="" class="img-fluid rounded shadow-lg bg-white p-2" style="max-height: 80vh; object-fit: contain;">
+                    <div id="lightboxTitle" class="text-white mt-3 fw-bold fs-5"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <div class="modal fade" id="addressModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header bg-success text-white rounded-top-4">
+                <h5 class="modal-title fw-bold">Delivery Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Aapka Name</label>
+                    <input type="text" id="oldName" class="form-control shadow-sm" placeholder="Aapka name">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Mobile Number</label>
+                    <input type="tel" id="oldPhone" class="form-control shadow-sm" placeholder="8957812308">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Address (Delivery ke liye)</label>
+                    <textarea id="oldAddress" class="form-control shadow-sm" rows="3" placeholder="Ghar No, Niranjanpur..."></textarea>
+                </div>
+                <button onclick="finalCheckout()" class="btn btn-success w-100 py-2 fw-bold rounded-pill shadow">Confirm Order</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div id="sticky-cart-bar" class="fixed-bottom bg-white border-top shadow-lg p-3 d-none">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div>
+                <div class="fw-bold text-success"><i class="fa fa-shopping-basket me-2"></i><span id="sticky-cart-count">0</span> Items</div>
+                <div class="text-muted small">Total: <span class="fw-bold">₹<span id="sticky-cart-total">0</span></span></div>
+            </div>
+            <button onclick="sendOrderToWhatsApp()" class="btn btn-success px-4 fw-bold rounded-pill">Place Order <i class="fab fa-whatsapp"></i></button>
+        </div>
+    </div>
+
+   <div class="modal fade" id="deliveryModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold text-success">Aapka Cart</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="cart-items-list">
+                </div>
+                <div class="px-3">
+    <label class="fw-bold small mb-2">Payment Method Chunein:</label>
+    <div class="d-flex gap-2 mb-3">
+        <div class="form-check border rounded p-2 flex-fill text-center bg-light">
+            <input class="form-check-input d-none" type="radio" name="payMethod" id="cod" value="COD" checked onclick="toggleQR(false)">
+            <label class="form-check-label w-100" for="cod" style="cursor:pointer;">
+                <i class="fa fa-hand-holding-dollar"></i><br>Cash
+            </label>
+        </div>
+        <div class="form-check border rounded p-2 flex-fill text-center bg-light">
+            <input class="form-check-input d-none" type="radio" name="payMethod" id="online" value="Online" onclick="toggleQR(true)">
+            <label class="form-check-label w-100" for="online" style="cursor:pointer;">
+                <i class="fa fa-qrcode"></i><br>UPI/QR
+            </label>
+        </div>
+    </div>
+
+    <div id="qr-container" class="text-center d-none mb-3 p-3 border rounded bg-white shadow-sm">
+        <p class="small text-muted mb-2">Scan karke payment karein:</p>
+        <img src="Screenshot 2026-05-04 105728.png" alt="UPI QR" class="img-fluid" style="width: 150px;">
+        <p class="fw-bold text-success mt-2 mb-0">UPI ID: surajkumarmaurya996@oksbi</p>
+    </div>
+</div>
+            <div id="checkout-form-container" class="px-3 pb-3 d-none">
+                <hr>
+                <div class="mb-2">
+                    <input type="text" id="custName" class="form-control rounded-3" placeholder="Aapka Naam">
+                </div>
+                <div class="mb-2">
+                    <input type="text" id="custPhone" class="form-control rounded-3" placeholder="Mobile Number">
+                </div>
+                <div class="mb-3">
+                    <textarea id="custAddress" class="form-control rounded-3" rows="2" placeholder="Address (Ghar No, Niranjanpur...)"></textarea>
+                </div>
+                <button onclick="finalCheckout()" class="btn btn-success w-100 rounded-pill py-2 fw-bold shadow">
+                    Confirm Order
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <footer class="bg-dark text-white py-4 text-center">
+        <div class="container small">
+            <p class="mb-1"><i class="fa fa-map-marker-alt"></i> patel nagar Niranjanpur, dehradun, UK - 248001</p>
+            <p class="mb-0">&copy; 2026 Apna Gharelu Product</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+    
+</body>
+</html>
